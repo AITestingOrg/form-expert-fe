@@ -1,0 +1,79 @@
+<mat-toolbar color="primary">
+  <h1 class="mat-h1">
+    <i class="material-icons md-24">ballot</i> Form Expert</h1>
+</mat-toolbar>
+<div class="grid-container">
+  <h2>Label / Type Mapping</h2>
+  <hr />
+  <p>Labels and Types may be mapped in order to provide abstractions. For example, the label "Email" can by mapped to the value
+    type "Email" which would be specified as the abstraction "VALID_EMAIL".</p>
+  <div class="flex">
+    <div class="table-controls">
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" color="" [disabled]="dataSource.empty ? null : true">
+        <mat-button-toggle value="edit">
+          <i class="material-icons">edit</i>
+        </mat-button-toggle>
+        <mat-button-toggle value="delete">
+          <i class="material-icons">delete</i>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="filter">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" [disabled]="dataSource.empty ? null : true">
+      </mat-form-field>
+    </div>
+    <div class="center-greedy"> </div>
+    <div class="adder">
+      <button mat-icon-button>
+        <i class="material-icons">add_circle</i>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="!dataSource.empty">
+    <mat-card>
+      <p><i class="material-icons">info</i> Looks like you may have been the first person here, try adding a Label Mapping using the <i class="material-icons">add_circle</i> button above!</p>
+    </mat-card>
+  </div>
+  <table mat-table [dataSource]="dataSource" matSort *ngIf="dataSource.empty">
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="weight">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight </th>
+      <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="symbol">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </th>
+      <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>
